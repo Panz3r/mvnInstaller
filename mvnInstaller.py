@@ -44,16 +44,16 @@ def _check_maven():
 
 
 def _install_maven():
-    downloaded = path.exists("apache-maven-3.2.2")
+    downloaded = path.exists('apache-maven-3.2.2')
 
     if not downloaded:
         logging.info("Downloading Maven from %s" % MVN_URL)
         try:
-            url_retrieve(MVN_URL, "mvn.zip")
+            url_retrieve(MVN_URL, 'mvn.zip')
             downloaded = True
-            logging.info("Download completed.")
-        except:
-            logging.error("Error downloading Maven")
+            logging.info('Download completed.')
+        except Exception as e:
+            logging.error("Error downloading Maven: %s" % e)
 
         if downloaded:
             logging.info("Extracting downloaded Maven")
@@ -62,9 +62,9 @@ def _install_maven():
                     mvn_zip.extractall()
 
                 logging.info("Cleaning up downloaded zip after successful extraction...")
-                remove("mvn.zip")
-            except:
-                logging.error("Extraction failed")
+                remove('mvn.zip')
+            except Exception as e:
+                logging.error("Extraction failed: %s" % e)
     else:
         logging.info("Maven already downloaded.")
 
@@ -83,15 +83,15 @@ def _update_mvn_permissions(mvn_script):
 
 
 def _get_mvn_path():
-    mvn_path = "mvn"
+    mvn_path = 'mvn'
     if not is_system_mvn:
         logging.debug("Preparing local Maven installation.")
 
-        mvn_script = "mvn"
+        mvn_script = 'mvn'
         if platform() == 'Windows':
-            mvn_script += ".bat"
+            mvn_script += '.bat'
 
-        mvn_path = path.join(path.curdir, "apache-maven-3.2.2", "bin", mvn_script)
+        mvn_path = path.join(path.curdir, 'apache-maven-3.2.2', 'bin', mvn_script)
         _update_mvn_permissions(mvn_path)
 
         logging.info("Maven found at %s" % mvn_path)
@@ -102,20 +102,18 @@ def _get_mvn_path():
 
 
 def _execute_pom():
-    downloaded = path.exists("pom.xml")
+    downloaded = path.exists('pom.xml')
 
     if not downloaded:
         logging.error("Couldn't find pom.xml. Check log")
     else:
-        logging.info("Executing pom.xml")
-
         mvn_cmd = _get_mvn_path()
 
         try:
             check_call([mvn_cmd] + MVN_ARGS)
             logging.info("pom.xml execution completed.")
-        except:
-            logging.error("Error during pom.xml execution")
+        except Exception as e:
+            logging.error("Error during pom.xml execution: %s" % e)
 
 
 def main():
