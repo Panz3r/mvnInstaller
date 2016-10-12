@@ -1,0 +1,9 @@
+pom:
+  url: https://gist.githubusercontent.com/Panz3r/b0320ac97fade563027f9c552cda7cfb/raw/ad6b33f953211a9cebeb74fffccabbf2b333ecf0/sample_pom.xml
+
+mvn:
+  args:
+    - -U
+    - -X
+    - clean
+    - package
