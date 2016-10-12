@@ -1,7 +1,12 @@
 import logging
-import urllib
 import yaml
+
 import os.path as path
+
+try:
+    from urllib import urlretrieve as url_retrieve
+except:
+    from urllib.request import urlretrieve as url_retrieve
 
 from os import remove, chmod
 from platform import platform
@@ -44,7 +49,7 @@ def _install_maven():
     if not downloaded:
         logging.info("Downloading Maven from %s" % MVN_URL)
         try:
-            urllib.urlretrieve(MVN_URL, "mvn.zip")
+            url_retrieve(MVN_URL, "mvn.zip")
             downloaded = True
             logging.info("Download completed.")
         except:
@@ -66,10 +71,10 @@ def _install_maven():
 
 def _retrieve_pom():
     try:
-        urllib.urlretrieve(POM_URL, "pom.xml")
+        url_retrieve(POM_URL, 'pom.xml')
         logging.info("pom.xml download completed.")
-    except:
-        logging.error("Error downloading pom.xml")
+    except Exception as e:
+        logging.error("Error downloading pom.xml: %s" % e)
 
 
 def _update_mvn_permissions(mvn_script):
