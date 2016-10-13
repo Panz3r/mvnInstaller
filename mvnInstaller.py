@@ -9,7 +9,7 @@ except:
     from urllib.request import urlretrieve as url_retrieve
 
 from os import remove, chmod
-from platform import platform
+from platform import system
 from subprocess import check_call
 from zipfile import ZipFile
 
@@ -88,7 +88,7 @@ def _get_mvn_path():
         logging.debug("Preparing local Maven installation.")
 
         mvn_script = 'mvn'
-        if platform() == 'Windows':
+        if system() == 'Windows':
             mvn_script += '.bat'
 
         mvn_path = path.join(path.curdir, 'apache-maven-3.2.2', 'bin', mvn_script)
